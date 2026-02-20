@@ -21,7 +21,7 @@ tier_2_cities = [
     "Kolhapur", "Bilaspur", "Jalandhar", "Noida", "Guntur", "Asansol", "Siliguri"
 ]
 
-# pydantic model to validate incoming data
+# pydantic model to validate incoming data from the user to predict the risk
 class UserInput(BaseModel):
 
     age: Annotated[int, Field(..., gt=0, lt=120, description='Age of the user')]
@@ -70,8 +70,9 @@ class UserInput(BaseModel):
             return 3
 
 @app.post('/predict')
-def predict_premium(data: UserInput):
+def predict_premium(data: UserInput): # provide data from user input type to the model
 
+    # create a pandas  dataframe as our model works on dataframes
     input_df = pd.DataFrame([{
         'bmi': data.bmi,
         'age_group': data.age_group,
